@@ -40,7 +40,6 @@
   }
 
   function onFile(e: Event) {
-    console.log(e)
     const target = e.target as HTMLInputElement
     const image = target.files?.[0]
 

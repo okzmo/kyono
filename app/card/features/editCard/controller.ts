@@ -20,7 +20,6 @@ export default class EditCardController {
 
   async handle({ request, auth, response }: HttpContext) {
     const data = await request.validateUsing(editCardValidator)
-    console.log(data)
     const user = await auth.authenticate()
 
     if (user.id === data.id) {
