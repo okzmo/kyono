@@ -1,0 +1,14 @@
+@import 'tailwindcss';
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: #111113;
+  color: #fafafa;
+}
+
+@theme {
+  --font-serif: 'Vollkorn', 'serif';
+  --font-sans: 'Rethink Sans', sans-serif;
+}
