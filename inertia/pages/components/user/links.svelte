@@ -3,6 +3,7 @@
   import { Dialog } from 'bits-ui'
   import { twJoin } from 'tailwind-merge'
   import SolarCloseCircleBoldDuotone from '~icons/solar/close-circle-bold-duotone'
+  import emblaCarouselSvelte from 'embla-carousel-svelte'
 
   interface Props {
     ownerIsEditing: boolean
@@ -21,6 +22,13 @@
   }
 
   let { userId, links, newLinks = $bindable(), ownerIsEditing, editingAvatar }: Props = $props()
+
+  let emblaApi = $state()
+  let options = { loop: false }
+
+  function onInit(event: any) {
+    emblaApi = event.detail
+  }
 
   let modalOpen = $state(false)
   let newLink = $state({
@@ -70,43 +78,55 @@
 </script>
 
 <Dialog.Root open={modalOpen}>
-  <ul class="flex mt-3 relative escaped">
-    {#if links.length > 0}
-      {#each links as link}
-        <li
-          class="first:ml-5 ml-3 flex items-center justify-center bg-zinc-50/20 rounded-full text-sm leading-none hover:bg-zinc-50/40 transition-colors duration-75 gap-x-2"
-          class:pr-1={ownerIsEditing && !editingAvatar}
-        >
-          <a
-            href={link.url}
-            class={twJoin('inset-0 py-2', ownerIsEditing && !editingAvatar ? 'pl-4 ' : 'px-4 ')}
-            target="_blank"
-            rel="noreferrer noopener"
+  <div
+    class="overflow-hidden mt-3 escaped pr-5"
+    use:emblaCarouselSvelte={{
+      options: { loop: false, align: 'start', dragFree: true },
+      plugins: [],
+    }}
+    onemblaInit={onInit}
+  >
+    <ul class="flex relative">
+      {#if links.length > 0}
+        {#each links as link}
+          <li
+            class="first:ml-5 ml-3 flex flex-[0_0_auto] items-center justify-center bg-zinc-50/20 rounded-full text-sm leading-none hover:bg-zinc-50/40 transition-colors duration-75 gap-x-2"
+            class:pr-1={ownerIsEditing && !editingAvatar}
           >
-            {link.label}
-          </a>
-          {#if ownerIsEditing && !editingAvatar}
-            <button
-              onclick={() => onDelete(link.id)}
-              class="rounded-full hover:cursor-pointer transition-colors flex items-center justify-center hover:text-red-400/75"
+            <a
+              href={link.url}
+              class={twJoin(
+                'inset-0 py-2 select-none',
+                ownerIsEditing && !editingAvatar ? 'pl-4 ' : 'px-4 '
+              )}
+              target="_blank"
+              rel="noreferrer noopener"
             >
-              <SolarCloseCircleBoldDuotone height={22} width={22} />
-            </button>
-          {/if}
+              {link.label}
+            </a>
+            {#if ownerIsEditing && !editingAvatar}
+              <button
+                onclick={() => onDelete(link.id)}
+                class="rounded-full hover:cursor-pointer transition-colors flex items-center justify-center hover:text-red-400/75"
+              >
+                <SolarCloseCircleBoldDuotone height={22} width={22} />
+              </button>
+            {/if}
+          </li>
+        {/each}
+      {/if}
+      {#if ownerIsEditing && !editingAvatar}
+        <li class="first:ml-5 ml-3">
+          <Dialog.Trigger
+            onclick={() => (modalOpen = true)}
+            class="flex items-center justify-center bg-zinc-50/20 px-4 py-2 rounded-full text-sm leading-none hover:bg-zinc-50/40 transition-colors duration-75 hover:cursor-pointer focus-visible:bg-zinc-50/40 focus-visible:outline-none active:bg-zinc-50/30"
+          >
+            +
+          </Dialog.Trigger>
         </li>
-      {/each}
-    {/if}
-    {#if ownerIsEditing && !editingAvatar}
-      <li class="first:ml-5 ml-3">
-        <Dialog.Trigger
-          onclick={() => (modalOpen = true)}
-          class="flex items-center justify-center bg-zinc-50/20 px-4 py-2 rounded-full text-sm leading-none hover:bg-zinc-50/40 transition-colors duration-75 hover:cursor-pointer focus-visible:bg-zinc-50/40 focus-visible:outline-none active:bg-zinc-50/30"
-        >
-          +
-        </Dialog.Trigger>
-      </li>
-    {/if}
-  </ul>
+      {/if}
+    </ul>
+  </div>
 
   <Dialog.Portal>
     <Dialog.Overlay class="absolute inset-0 z-50 bg-black/80" />
