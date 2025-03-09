@@ -66,7 +66,7 @@
 </script>
 
 <figure class="h-[6rem] w-[6rem] rounded-full ml-5 overflow-hidden relative">
-  <img src={avatarUrl} alt="burning car" class="h-full w-full object-cover" />
+  <img src={avatarUrl} alt="burning car" class="h-full w-full object-cover select-none" />
   {#if ownerIsEditing}
     <button
       onclick={editAvatarImage}

@@ -63,7 +63,7 @@
     <SolarGalleryEditBoldDuotone />
   </button>
 {/if}
-<img src={currentBanner} alt="vehicle" class="h-full w-full object-cover absolute" />
+<img src={currentBanner} alt="vehicle" class="h-full w-full object-cover absolute select-none" />
 
 {#if ownerIsEditing && !editingAvatar}
   <input

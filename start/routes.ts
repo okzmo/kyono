@@ -7,10 +7,17 @@
 |
 */
 
+import User from '#auth/models/user'
 import { registerAuthRoutes } from '#auth/routes'
+import Link from '#card/models/link'
 import { registerCardRoutes } from '#card/routes'
 import router from '@adonisjs/core/services/router'
-router.get('/', ({ inertia }) => inertia.render('home'))
+router.get('/', async ({ inertia }) => {
+  const user = await User.query().where('username', 'okzmo').first()
+  const links = await Link.query().where('user_id', user!.id)
+
+  return inertia.render('home', { user, links })
+})
 
 router.group(() => {
   registerAuthRoutes()
