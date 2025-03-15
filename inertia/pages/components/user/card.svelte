@@ -52,9 +52,7 @@
   let allLinks = $derived([...links, ...$userState.links])
 </script>
 
-<div
-  class="fixed left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex flex-col-reverse items-center w-fit mt-12"
->
+<div class="flex flex-col-reverse items-center w-fit">
   {#if userNotFound}
     <h1>This user doesn't exist</h1>
   {:else}

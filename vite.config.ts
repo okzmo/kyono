@@ -9,7 +9,7 @@ import Icons from 'unplugin-icons/vite'
 export default defineConfig({
   plugins: [
     inertia({ ssr: { enabled: true, entrypoint: 'inertia/app/ssr.ts' } }),
-    svelte({ compilerOptions: { hydratable: true } }),
+    svelte(),
     tailwindcss(),
     adonisjs({ entrypoints: ['inertia/app/app.ts'], reload: ['resources/views/**/*.edge'] }),
     Icons({

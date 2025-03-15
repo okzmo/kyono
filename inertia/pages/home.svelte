@@ -17,13 +17,15 @@
   />
 </a>
 
-<div
-  class="flex flex-col items-center fixed left-1/2 -translate-x-1/2 top-1/2 -translate-y-[calc(50%-4rem)]"
->
-  <Card userNotFound={false} isOwner={false} {user} {links} />
-  <a
-    href="/signin"
-    class="font-serif text-2xl text-zinc-50/50 hover:text-zinc-50 mt-16 transition-colors"
-    >Create your own</a
+{#if user}
+  <div
+    class="flex flex-col items-center fixed left-1/2 -translate-x-1/2 top-1/2 -translate-y-[calc(50%-4rem)]"
   >
-</div>
+    <Card userNotFound={false} isOwner={false} {user} {links} />
+    <a
+      href="/signin"
+      class="font-serif text-2xl text-zinc-50/50 hover:text-zinc-50 mt-16 transition-colors"
+      >Create your own</a
+    >
+  </div>
+{/if}

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { twJoin } from 'tailwind-merge'
   import Card from './components/user/card.svelte'
 
   interface Props {
@@ -33,4 +34,6 @@
   {/if}
 </svelte:head>
 
-<Card {userNotFound} {isOwner} {user} {links} />
+<div class={twJoin('fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2', isOwner && 'mt-12')}>
+  <Card {userNotFound} {isOwner} {user} {links} />
+</div>
