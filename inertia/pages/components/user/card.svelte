@@ -6,8 +6,10 @@
   import Status from './status.svelte'
   import Links from './links.svelte'
   import Banner from './banner.svelte'
+  import { twJoin } from 'tailwind-merge'
 
   interface Props {
+    presentation?: boolean
     userNotFound: boolean
     isOwner: boolean
     user: {
@@ -26,7 +28,7 @@
     }[]
   }
 
-  let { userNotFound, isOwner, user, links }: Props = $props()
+  let { userNotFound, isOwner, user, links, presentation = false }: Props = $props()
 
   let userState = useForm({
     id: user.id,
@@ -87,7 +89,12 @@
     {/if}
 
     <main
-      class="w-screen h-screen md:w-[26.56rem] md:h-[18.75rem] bg-zinc-900 relative before:hidden before:md:block before:absolute before:inset-0 before:border before:border-zinc-50/10 before:content-normal before:z-10 before:pointer-events-none"
+      class={twJoin(
+        'md:w-[26.56rem] md:h-[18.75rem] bg-zinc-900 relative before:absolute before:inset-0 before:border before:border-zinc-50/10 before:content-normal before:z-10 before:pointer-events-none',
+        presentation
+          ? 'w-[calc(100vw-2rem)] h-[calc(100vh-20rem)] rounded-xl md:rounded-none before:rounded-xl before:md:rounded-none overflow-hidden'
+          : 'w-screen h-screen before:hidden before:md:block'
+      )}
     >
       <img
         role="presentation"
@@ -97,6 +104,7 @@
       />
 
       <Banner
+        {presentation}
         {ownerIsEditing}
         bind:editingBanner={editing.banner}
         currentBanner={user.bannerUrl}
@@ -108,10 +116,16 @@
       {#if !editing.banner}
         <div
           role="presentation"
-          class="h-full w-full absolute bg-zinc-950/50 progressive-blur"
+          class={twJoin(
+            'h-full w-full absolute bg-zinc-950/50 progressive-blur',
+            presentation ? 'rounded-xl md:rounded-none' : ''
+          )}
         ></div>
         <div
-          class="relative flex flex-col z-1 md:justify-end items-center md:items-start h-full md:py-4 overflow-auto pt-[12rem] md:pt-0"
+          class={twJoin(
+            'relative flex flex-col z-1 md:justify-end items-center md:items-start h-full md:py-4 overflow-auto md:pt-0',
+            presentation ? 'py-[2rem]' : 'pt-[12rem] pb-[2rem]'
+          )}
         >
           <Status
             {ownerIsEditing}

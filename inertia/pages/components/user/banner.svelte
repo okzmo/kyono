@@ -1,6 +1,7 @@
 <script lang="ts">
   import SolarGalleryEditBoldDuotone from '~icons/solar/gallery-edit-bold-duotone'
   import Cropper from 'svelte-easy-crop'
+  import { twJoin } from 'tailwind-merge'
 
   let {
     ownerIsEditing,
@@ -9,6 +10,7 @@
     newBanner = $bindable(),
     details = $bindable(),
     editingAvatar,
+    presentation = false,
   } = $props()
 
   let bannerImageFromUser = $state<string | null>()
@@ -63,7 +65,14 @@
     <SolarGalleryEditBoldDuotone />
   </button>
 {/if}
-<img src={currentBanner} alt="vehicle" class="h-full w-full object-cover absolute select-none" />
+<img
+  src={currentBanner}
+  alt=""
+  class={twJoin(
+    'h-full w-full object-cover absolute select-none',
+    presentation ? 'rounded-xl' : ''
+  )}
+/>
 
 {#if ownerIsEditing && !editingAvatar}
   <input
