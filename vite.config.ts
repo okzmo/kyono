@@ -26,4 +26,8 @@ export default defineConfig({
       '~/': `${getDirname(import.meta.url)}/inertia/`,
     },
   },
+
+  server: {
+    allowedHosts: ['cachyos.tail0ad30c.ts.net'],
+  },
 })

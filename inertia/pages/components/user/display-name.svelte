@@ -31,7 +31,7 @@
       class="italic font-serif text-3xl ml-5 w-[calc(100%-4rem)] focus-visible:outline-none border-b border-b-white/50"
     />
   {:else}
-    <h1 class="italic font-serif text-3xl pl-5">{displayName}</h1>
+    <h1 class="italic font-serif text-3xl md:pl-5">{displayName}</h1>
   {/if}
 
   {#if ownerIsEditing && !editingAvatar}

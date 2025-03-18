@@ -93,7 +93,7 @@
         'md:w-[26.56rem] md:h-[18.75rem] bg-zinc-900 relative before:absolute before:inset-0 before:border before:border-zinc-50/10 before:content-normal before:z-10 before:pointer-events-none',
         presentation
           ? 'w-[calc(100vw-2rem)] h-[calc(100vh-20rem)] rounded-xl md:rounded-none before:rounded-xl before:md:rounded-none overflow-hidden'
-          : 'w-screen h-screen before:hidden before:md:block'
+          : 'w-dvw h-dvh before:hidden before:md:block'
       )}
     >
       <img
@@ -124,7 +124,7 @@
         <div
           class={twJoin(
             'relative flex flex-col z-1 md:justify-end items-center md:items-start h-full md:py-4 overflow-auto md:pt-0',
-            presentation ? 'py-[2rem]' : 'pt-[12rem] pb-[2rem]'
+            presentation ? 'py-[2rem]' : 'pt-[8rem] pb-[2rem]'
           )}
         >
           <Status
