@@ -18,11 +18,13 @@
 </a>
 
 {#if user}
-  <div class="flex flex-col items-center fixed left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+  <div
+    class="flex flex-col items-center fixed left-1/2 -translate-x-1/2 top-1/2 -translate-y-[42%]"
+  >
     <Card presentation userNotFound={false} isOwner={false} {user} {links} />
     <a
       href="/signin"
-      class="font-serif text-2xl text-zinc-50/50 hover:text-zinc-50 mt-16 transition-colors"
+      class="font-serif italic text-2xl text-zinc-50/50 hover:text-zinc-50 mt-8 md:mt-16 transition-colors"
       >Create your own</a
     >
   </div>
