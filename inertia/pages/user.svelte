@@ -35,7 +35,12 @@
   {/if}
 </svelte:head>
 
-<div class={twJoin('fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2', isOwner && 'mt-12')}>
+<div
+  class={twJoin(
+    'md:fixed md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2',
+    isOwner && 'md:mt-12'
+  )}
+>
   <Card {userNotFound} {isOwner} {user} {links} />
 </div>
 
