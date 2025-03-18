@@ -24,7 +24,6 @@
   let { userId, links, newLinks = $bindable(), ownerIsEditing, editingAvatar }: Props = $props()
 
   let emblaApi = $state()
-  let options = { loop: false }
 
   function onInit(event: any) {
     emblaApi = event.detail
@@ -79,7 +78,7 @@
 
 <Dialog.Root open={modalOpen}>
   <div
-    class="overflow-hidden mt-3 escaped pr-5"
+    class="overflow-hidden mt-3 escaped pr-5 hidden md:block w-full"
     use:emblaCarouselSvelte={{
       options: { loop: false, align: 'start', dragFree: true },
       plugins: [],
@@ -127,7 +126,6 @@
       {/if}
     </ul>
   </div>
-
   <Dialog.Portal>
     <Dialog.Overlay class="absolute inset-0 z-50 bg-black/80" />
     <Dialog.Content
@@ -174,6 +172,25 @@
     </Dialog.Content>
   </Dialog.Portal>
 </Dialog.Root>
+
+{#if links.length > 0}
+  <ul class="flex flex-col md:hidden w-full gap-y-3 px-4 mt-5">
+    {#each links as link}
+      <li
+        class="flex items-center justify-center bg-zinc-50/15 rounded-lg leading-none hover:bg-zinc-50/40 transition-colors duration-75 backdrop-blur-xl"
+      >
+        <a
+          href={link.url}
+          class="inset-0 py-4 select-none w-full flex items-center justify-center"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          {link.label}
+        </a>
+      </li>
+    {/each}
+  </ul>
+{/if}
 
 <style>
   .escaped {

@@ -18,7 +18,12 @@
   }: Props = $props()
 </script>
 
-<div class={twJoin('mt-3 flex gap-x-3 items-center', ownerIsEditing && !editingAvatar && 'group')}>
+<div
+  class={twJoin(
+    'mt-12 md:mt-3 flex gap-x-3 items-center',
+    ownerIsEditing && !editingAvatar && 'group'
+  )}
+>
   {#if editingDisplayName && !editingAvatar}
     <input
       type="text"

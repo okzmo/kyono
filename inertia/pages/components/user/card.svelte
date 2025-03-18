@@ -87,13 +87,13 @@
     {/if}
 
     <main
-      class="w-[26.56rem] h-[18.75rem] bg-zinc-900 relative before:absolute before:inset-0 before:border before:border-zinc-50/10 before:content-normal before:z-10 before:pointer-events-none"
+      class="w-screen h-screen md:w-[26.56rem] md:h-[18.75rem] bg-zinc-900 relative before:hidden before:md:block before:absolute before:inset-0 before:border before:border-zinc-50/10 before:content-normal before:z-10 before:pointer-events-none"
     >
       <img
         role="presentation"
         src={user.bannerUrl}
         alt="vehicle"
-        class="w-[26.56rem] h-[18.75rem] object-cover absolute blur-3xl opacity-65 select-none"
+        class="hidden md:block w-[26.56rem] h-[18.75rem] object-cover absolute blur-3xl opacity-65 select-none"
       />
 
       <Banner
@@ -110,7 +110,9 @@
           role="presentation"
           class="h-full w-full absolute bg-zinc-950/50 progressive-blur"
         ></div>
-        <div class="relative flex flex-col z-1 justify-end h-full py-4">
+        <div
+          class="relative flex flex-col z-1 md:justify-end items-center md:items-start h-full md:py-4 overflow-auto pt-[12rem] md:pt-0"
+        >
           <Status
             {ownerIsEditing}
             bind:status={$userState.status}
@@ -133,7 +135,7 @@
             editingAvatar={editing.avatar}
           />
 
-          {#if user.description}
+          {#if user.description || ownerIsEditing}
             <Description
               {ownerIsEditing}
               bind:description={$userState.description}
@@ -156,17 +158,3 @@
     </main>
   {/if}
 </div>
-
-<style>
-  .progressive-blur {
-    backdrop-filter: blur(64px);
-    mask-image: radial-gradient(
-      100% 100% at 50% 0%,
-      rgba(250, 250, 250, 0) 55%,
-      rgba(250, 250, 250, 0.524324) 65%,
-      rgba(250, 250, 250, 0.778248) 75%,
-      rgba(250, 250, 250, 0.927378) 85%,
-      #fafafa 95%
-    );
-  }
-</style>

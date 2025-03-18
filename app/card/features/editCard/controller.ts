@@ -56,7 +56,7 @@ export default class EditCardController {
         .toBuffer()
 
       const existingBannerKey = user.bannerUrl?.split('/')?.pop()
-      let newBannerKey = `${user.username}-banner-${cuid()}.${banner.extname}`
+      let newBannerKey = `${user.username}-banner-${cuid()}.webp`
 
       await drive.use('s3').put(newBannerKey, croppedImage)
       if (existingBannerKey) await drive.use('s3').delete(existingBannerKey)
@@ -77,11 +77,13 @@ export default class EditCardController {
         .webp({ quality: 85 })
         .toBuffer()
 
-      const existingAvatarKey = user.avatarUrl?.split('/')?.pop()
-      let newAvatarKey = `${user.username}-avatar-${cuid()}.${avatar.extname}`
+      if (user.avatarUrl.includes(env.get('AWS_CDN_URL'))) {
+        const existingKey = user.avatarUrl.split('/')?.pop()
+        if (existingKey) await drive.use('s3').delete(existingKey)
+      }
 
+      let newAvatarKey = `${user.username}-avatar-${cuid()}.webp`
       await drive.use('s3').put(newAvatarKey, croppedImage)
-      if (existingAvatarKey) await drive.use('s3').delete(existingAvatarKey)
       user.avatarUrl = `${env.get('AWS_CDN_URL')}/${newAvatarKey}`
       await user.save()
     }

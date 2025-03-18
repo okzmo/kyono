@@ -65,8 +65,15 @@
   }
 </script>
 
-<figure class="h-[6rem] w-[6rem] rounded-full ml-5 overflow-hidden relative">
-  <img src={avatarUrl} alt="burning car" class="h-full w-full object-cover select-none" />
+<figure
+  class="h-[9rem] w-[9rem] md:h-[6rem] md:w-[6rem] rounded-full md:ml-5 overflow-hidden relative mt-5 md:mt-0 shrink-0 flex justify-center items-center"
+>
+  <div class="h-full w-full absolute left-0 top-0 bg-zinc-50/5 backdrop-blur-2xl z-[-1]"></div>
+  <img
+    src={avatarUrl}
+    alt="burning car"
+    class="h-[calc(100%-1rem)] w-[calc(100%-1rem)] md:h-full md:w-full object-cover rounded-full"
+  />
   {#if ownerIsEditing}
     <button
       onclick={editAvatarImage}

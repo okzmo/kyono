@@ -28,7 +28,7 @@
       class="font-sans text-white/65 ml-5 w-[calc(100%-4rem)] focus-visible:outline-none border-b border-b-white/50"
     />
   {:else}
-    <p class="font-sans text-white/65 pl-5">{description}</p>
+    <p class="font-sans text-white/65 pl-5">{description || 'add a description'}</p>
   {/if}
 
   {#if ownerIsEditing && !editingAvatar}
