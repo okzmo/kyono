@@ -30,6 +30,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   | Variables for configuring database connection
   |----------------------------------------------------------
   */
+  DB_CONNECTION: Env.schema.enum(['sqlite', 'postgres'] as const),
   DB_HOST: Env.schema.string({ format: 'host' }),
   DB_PORT: Env.schema.number(),
   DB_USER: Env.schema.string(),
@@ -59,5 +60,5 @@ export default await Env.create(new URL('../', import.meta.url), {
   AWS_REGION: Env.schema.string(),
   S3_BUCKET: Env.schema.string(),
 
-  AWS_CDN_URL: Env.schema.string()
+  AWS_CDN_URL: Env.schema.string(),
 })

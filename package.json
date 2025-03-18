@@ -74,6 +74,7 @@
     "@inertiajs/svelte": "^2.0.4",
     "@tailwindcss/vite": "^4.0.10",
     "@vinejs/vine": "^3.0.0",
+    "better-sqlite3": "^11.9.1",
     "bits-ui": "^1.0.0-next.98",
     "edge.js": "^6.2.1",
     "embla-carousel-svelte": "^8.5.2",
