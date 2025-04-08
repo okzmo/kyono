@@ -12,6 +12,7 @@
       displayName: string
       bannerUrl: string
       avatarUrl: string
+      metaImgUrl: string
       description: string | null
       status: string | null
     }
@@ -26,12 +27,17 @@
 </script>
 
 <svelte:head>
-  {#if userNotFound}
-    <title>404</title>
+  <title>
+    {userNotFound ? '404' : `${user.displayName} | ${user.status}`}
+  </title>
+  {#if !userNotFound}
+    <meta property="og:title" content={`${user.displayName} | ${user.status}`} />
+    <meta property="og:description" content={user.description} />
+    <meta property="og:image" content={user.metaImgUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
   {:else}
-    <title>
-      {user.displayName} | {user.status}
-    </title>
+    <meta property="og:title" content="Profile not found" />
+    <meta property="og:description" content="The requested user profile could not be found" />
   {/if}
 </svelte:head>
 

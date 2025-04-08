@@ -61,4 +61,6 @@ export default await Env.create(new URL('../', import.meta.url), {
   S3_BUCKET: Env.schema.string(),
 
   AWS_CDN_URL: Env.schema.string(),
+
+  APP_URL: Env.schema.string()
 })

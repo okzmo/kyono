@@ -8,9 +8,25 @@ body {
   color: #fafafa;
 }
 
+@font-face {
+  font-family: 'Holimount';
+  font-weight: 400;
+  src: url('/Holimount.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'BebasNeue';
+  font-weight: 400;
+  src: url('/BebasNeue-Regular.ttf');
+}
+
 @theme {
   --font-serif: 'Vollkorn', 'serif';
   --font-sans: 'Rethink Sans', sans-serif;
+  --font-bebas: 'BebasNeue', sans-serif;
+  --font-signature: 'Holimount', sans-serif;
+
+  --color-accent: #1462c2;
 }
 
 .progressive-blur {

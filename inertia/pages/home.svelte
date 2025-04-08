@@ -1,31 +1,47 @@
 <script lang="ts">
-  import Kyodo from './components/logos/kyodo.svelte'
-  import Card from './components/user/card.svelte'
+  import Kyono from './components/logos/Kyono.svelte'
+  import Noise from './components/shared/Noise.svelte'
 
-  let { user, links } = $props()
+  // let { user, links } = $props()
 </script>
 
 <svelte:head>
   <title>Homepage</title>
 </svelte:head>
 
-<a href="/signin">
-  <Kyodo
-    height={22}
-    width={28}
-    class="fixed left-1/2 -translate-x-1/2 top-8 text-zinc-50/20 hover:text-zinc-50 active:text-zinc-50/70 transition-colors duration-75"
-  />
-</a>
-
-{#if user}
+<main class="h-screen w-screen bg-accent">
+  <h1 class="sr-only">Nosync</h1>
   <div
-    class="flex flex-col items-center fixed left-1/2 -translate-x-1/2 top-1/2 -translate-y-[42%]"
+    class="fixed mx-3 mt-2 lg:left-1/2 lg:top-1/2 lg:mx-0 lg:mt-6 lg:-translate-x-1/2 lg:-translate-y-1/2"
   >
-    <Card presentation userNotFound={false} isOwner={false} {user} {links} />
-    <a
-      href="/signin"
-      class="font-serif italic text-2xl text-zinc-50/50 hover:text-zinc-50 mt-8 md:mt-16 transition-colors"
-      >Create your own</a
-    >
+    <Kyono class="not-sr-only w-full lg:w-[940px]" />
+    <p class="relative mt-4 font-medium text-white md:max-w-[44rem] lg:mt-6">
+      A gorgeous alternative to share with the world who you are. Your name, a description, links,
+      avatar, banner, status and plenty more will be coming soon. Take care.
+    </p>
   </div>
-{/if}
+
+  <Noise animation={false} />
+
+  <div class="hidden lg:block">
+    <span class="fixed left-2 top-2 h-2 w-8 bg-white"></span>
+    <span class="fixed -left-1 top-5 h-2 w-8 rotate-90 bg-white"></span>
+    <span class="fixed right-2 top-2 h-2 w-8 bg-white"></span>
+    <span class="fixed -right-1 top-5 h-2 w-8 rotate-90 bg-white"></span>
+
+    <span class="fixed bottom-2 left-2 h-2 w-8 bg-white"></span>
+    <span class="fixed -left-1 bottom-5 h-2 w-8 rotate-90 bg-white"></span>
+    <span class="fixed bottom-2 right-2 h-2 w-8 bg-white"></span>
+    <span class="fixed -right-1 bottom-5 h-2 w-8 rotate-90 bg-white"></span>
+  </div>
+
+  <a
+    href="/signin"
+    class="group fixed bottom-4 left-1/2 -translate-x-1/2 font-bebas text-4xl uppercase text-white/50 transition-colors duration-75 hover:text-white"
+  >
+    Create your own
+    <div
+      class="absolute left-1/2 top-1/2 h-[5px] w-[0px] -translate-x-1/2 -translate-y-1/2 bg-white transition-all delay-75 duration-75 group-hover:w-[calc(100%+0.25rem)]"
+    ></div>
+  </a>
+</main>

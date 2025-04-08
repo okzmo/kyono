@@ -29,6 +29,9 @@ export default class User extends BaseModel {
   declare avatarUrl: string
 
   @column()
+  declare metaImgUrl: string
+
+  @column()
   declare description: string | null
 
   @column()
