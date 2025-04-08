@@ -15,7 +15,9 @@
     class="fixed mx-3 mt-2 lg:left-1/2 lg:top-1/2 lg:mx-0 lg:mt-6 lg:-translate-x-1/2 lg:-translate-y-1/2"
   >
     <Kyono class="not-sr-only w-full lg:w-[940px]" />
-    <p class="relative mt-4 font-medium text-white md:max-w-[44rem] lg:mt-6">
+    <p
+      class="relative mt-4 font-medium text-white md:max-w-[44rem] lg:mt-6 selection:bg-white selection:text-accent"
+    >
       A gorgeous alternative to share with the world who you are. Your name, a description, links,
       avatar, banner, status and plenty more will be coming soon. Take care.
     </p>
@@ -37,7 +39,7 @@
 
   <a
     href="/signin"
-    class="group fixed bottom-4 left-1/2 -translate-x-1/2 font-bebas text-4xl uppercase text-white/50 transition-colors duration-75 hover:text-white"
+    class="group fixed bottom-4 lg:left-1/2 lg:-translate-x-1/2 font-bebas text-4xl uppercase text-white/50 transition-colors duration-75 hover:text-white w-full flex justify-center lg:w-auto select-none"
   >
     Create your own
     <div

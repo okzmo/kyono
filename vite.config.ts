@@ -23,6 +23,7 @@ export default defineConfig({
    */
   resolve: {
     alias: {
+      '~/fonts': `${getDirname(import.meta.url)}/public/fonts/`,
       '~/': `${getDirname(import.meta.url)}/inertia/`,
     },
   },
