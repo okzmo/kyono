@@ -4,6 +4,9 @@
   import { twJoin } from 'tailwind-merge'
   import SolarCloseCircleBoldDuotone from '~icons/solar/close-circle-bold-duotone'
   import emblaCarouselSvelte from 'embla-carousel-svelte'
+  import CustomDialogContent from '../shared/CustomDialogContent.svelte'
+  import CustomDialogOverlay from '../shared/CustomDialogOverlay.svelte'
+  import CrossIcon from '../shared/CrossIcon.svelte'
 
   interface Props {
     ownerIsEditing: boolean
@@ -127,10 +130,8 @@
     </ul>
   </div>
   <Dialog.Portal>
-    <Dialog.Overlay class="absolute inset-0 z-50 bg-black/80" />
-    <Dialog.Content
-      class="rounded-lg bg-zinc-900 shadow-xl outline-hidden fixed left-[50%] top-[50%] z-50 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] border border-zinc-800 p-5 sm:max-w-[490px] md:w-full"
-    >
+    <CustomDialogOverlay />
+    <CustomDialogContent>
       <Dialog.Title class="flex w-full items-center text-lg font-semibold tracking-tight">
         Create a new link
       </Dialog.Title>
@@ -165,11 +166,11 @@
 
       <Dialog.Close
         onclick={() => (modalOpen = false)}
-        class="focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden absolute right-5 top-5 rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98]"
+        class="hover:cursor-pointer hover:bg-zinc-50/10 h-[24px] w-[24px] flex justify-center items-center focus-visible:outline-hidden absolute right-5 top-5 rounded-md transition-colors duration-100"
       >
-        X
+        <CrossIcon />
       </Dialog.Close>
-    </Dialog.Content>
+    </CustomDialogContent>
   </Dialog.Portal>
 </Dialog.Root>
 
