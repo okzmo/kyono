@@ -6,11 +6,11 @@
 </script>
 
 <svelte:head>
-  <title>Homepage</title>
+  <title>Kyono</title>
 </svelte:head>
 
 <main class="h-screen w-screen bg-accent">
-  <h1 class="sr-only">Nosync</h1>
+  <h1 class="sr-only">Kyono</h1>
   <div
     class="fixed mx-3 mt-2 lg:left-1/2 lg:top-1/2 lg:mx-0 lg:mt-6 lg:-translate-x-1/2 lg:-translate-y-1/2"
   >
