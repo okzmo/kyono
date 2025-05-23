@@ -76,7 +76,7 @@
           }
           editing.global = !editing.global
         }}
-        class="bg-zinc-900 border border-zinc-800 px-5 py-2 rounded-lg hover:bg-zinc-800 hover:border-zinc-700 focus-visible:outline-none focus-visible:border-zinc-700 focus-visible:bg-zinc-800 transition-colors duration-75 hover:cursor-pointer w-fit mt-12"
+        class="bg-zinc-900 border border-zinc-800 px-5 py-2 rounded-lg hover:bg-zinc-800 hover:border-zinc-700 focus-visible:outline-none focus-visible:border-zinc-700 focus-visible:bg-zinc-800 transition-colors duration-75 hover:cursor-pointer w-fit mt-12 hidden md:block"
       >
         {!editing.global
           ? 'Edit'

@@ -20,7 +20,7 @@
 
 <div
   class={twJoin(
-    'flex gap-x-2 items-center w-full',
+    'flex gap-x-2 items-center md:w-full',
     ownerIsEditing && !editingAvatar && 'group !gap-x-3'
   )}
 >

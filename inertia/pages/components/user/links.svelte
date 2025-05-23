@@ -173,6 +173,7 @@
   </Dialog.Portal>
 </Dialog.Root>
 
+<!-- MOBILE -->
 {#if links.length > 0}
   <ul class="flex flex-col md:hidden w-full gap-y-3 px-4 mt-5">
     {#each links as link}
