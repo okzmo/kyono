@@ -107,14 +107,25 @@ export default class EditCardController {
     const user = await auth.authenticate()
     if (user.id !== data.id) return response.status(403)
 
-    if (data.links) {
+    if (data.newLinks) {
       await Link.createMany(
-        data.links.map((link) => ({
+        data.newLinks.map((link) => ({
+          id: link.id,
           label: link.label,
           url: normalizeUrl(link.url),
           userId: link.userId,
         }))
       )
+    }
+
+    const userLinks = await Link.query().where('user_id', user.id).orderBy('position', 'asc')
+    for (const ogLink of userLinks) {
+      for (const [idx, newLink] of data.allLinks.entries()) {
+        if (ogLink.id === newLink.id) {
+          ogLink.position = idx
+          await ogLink.save()
+        }
+      }
     }
 
     if (!this.#noChanges(user, data)) {

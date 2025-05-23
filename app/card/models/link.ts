@@ -14,6 +14,9 @@ export default class Link extends BaseModel {
   @column()
   declare url: string
 
+  @column()
+  declare position: number
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

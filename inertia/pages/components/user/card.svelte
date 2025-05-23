@@ -38,7 +38,8 @@
     status: user.status,
     avatar: null,
     banner: null,
-    links: [],
+    newLinks: [],
+    allLinks: links,
     details: { x: 0, y: 0, width: 0, height: 0 },
   })
 
@@ -50,8 +51,13 @@
     description: false,
     status: false,
   })
+
   let ownerIsEditing = $derived(isOwner && editing.global)
-  let allLinks = $derived([...links, ...$userState.links])
+  let allLinks = $state([...links, ...$userState.newLinks])
+
+  $effect(() => {
+    allLinks = [...links, ...$userState.newLinks]
+  })
 </script>
 
 <div class="flex flex-col-reverse items-center w-fit">
@@ -62,17 +68,22 @@
       <button
         onclick={() => {
           if (editing.global) {
-            $userState.post('/edit', {
-              preserveState: true,
-              onSuccess: () => {
-                if (!editing.global) {
-                  for (const key of Object.keys(editing)) {
-                    editing[key] = false
+            $userState
+              .transform((data) => ({
+                ...data,
+                allLinks: allLinks,
+              }))
+              .post('/edit', {
+                preserveState: true,
+                onSuccess: () => {
+                  if (!editing.global) {
+                    for (const key of Object.keys(editing)) {
+                      editing[key] = false
+                    }
                   }
-                }
-                $userState.reset('links', 'details', 'avatar', 'banner')
-              },
-            })
+                  $userState.reset('newLinks', 'details', 'avatar', 'banner')
+                },
+              })
           }
           editing.global = !editing.global
         }}
@@ -161,8 +172,8 @@
           {#if links.length > 0 || ownerIsEditing}
             <Links
               userId={user.id}
-              links={allLinks}
-              bind:newLinks={$userState.links}
+              bind:links={allLinks}
+              bind:newLinks={$userState.newLinks}
               {ownerIsEditing}
               editingAvatar={editing.avatar}
             />

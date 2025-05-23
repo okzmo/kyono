@@ -7,7 +7,7 @@ export default class ShowCardController {
     const user = await User.query().where('username', params.username).first()
     if (!user) return inertia.render('home', { userNotFound: true })
 
-    const links = await Link.query().where('user_id', user!.id)
+    const links = await Link.query().where('user_id', user!.id).orderBy('position', 'asc')
     await auth.check()
 
     return inertia.render('user', {

@@ -17,15 +17,24 @@ export const editCardValidator = vine.compile(
         height: vine.number(),
       })
       .optional(),
-    links: vine
+    newLinks: vine
       .array(
         vine.object({
+          id: vine.number(),
           userId: vine.number(),
           label: vine.string(),
           url: vine.string().url(),
         })
       )
       .optional(),
+    allLinks: vine.array(
+      vine.object({
+        id: vine.number().optional(),
+        userId: vine.number(),
+        label: vine.string(),
+        url: vine.string().url(),
+      })
+    ),
   })
 )
 

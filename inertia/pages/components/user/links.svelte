@@ -7,16 +7,21 @@
   import CustomDialogContent from '../shared/CustomDialogContent.svelte'
   import CustomDialogOverlay from '../shared/CustomDialogOverlay.svelte'
   import CrossIcon from '../shared/CrossIcon.svelte'
+  import { getRandomId } from '~/utils/id'
+  import SwapIcon from '../shared/SwapIcon.svelte'
+
+  interface Link {
+    id: number
+    url: string
+    label: string
+  }
 
   interface Props {
     ownerIsEditing: boolean
     userId: number
-    links: {
-      id: number
-      url: string
-      label: string
-    }[]
+    links: Link[]
     newLinks: {
+      id: number
       userId: number
       url: string
       label: string
@@ -24,7 +29,13 @@
     editingAvatar: boolean
   }
 
-  let { userId, links, newLinks = $bindable(), ownerIsEditing, editingAvatar }: Props = $props()
+  let {
+    userId,
+    links = $bindable(),
+    newLinks = $bindable(),
+    ownerIsEditing,
+    editingAvatar,
+  }: Props = $props()
 
   let emblaApi = $state()
 
@@ -45,7 +56,12 @@
     modalOpen = false
     newLinks = [
       ...newLinks,
-      { label: newLink.label, url: normalizeUrl(newLink.url), userId: newLink.userId },
+      {
+        id: getRandomId(),
+        label: newLink.label,
+        url: normalizeUrl(newLink.url),
+        userId: newLink.userId,
+      },
     ]
 
     newLink.url = ''
@@ -54,7 +70,11 @@
 
   function onDelete(linkId: number) {
     const linkIdx = links.findIndex((l) => l.id === linkId)
-    if (linkIdx >= 0) {
+    const newLinkIdx = newLinks.findIndex((l) => l.id === linkId)
+    if (newLinkIdx >= 0) {
+      newLinks.splice(newLinkIdx, 1)
+      links.splice(linkIdx, 1)
+    } else if (linkIdx >= 0) {
       links.splice(linkIdx, 1)
       router.post('/link/delete', {
         userId,
@@ -77,29 +97,35 @@
 
     return normalizedUrl
   }
+
+  function swap(idx: number) {
+    const temp = links[idx]
+    links[idx] = links[idx + 1]
+    links[idx + 1] = temp
+  }
 </script>
 
 <Dialog.Root open={modalOpen}>
   <div
     class="overflow-hidden mt-3 escaped pr-5 hidden md:block w-full"
     use:emblaCarouselSvelte={{
-      options: { loop: false, align: 'start', dragFree: true },
+      options: { loop: false, align: 'start', dragFree: false },
       plugins: [],
     }}
     onemblaInit={onInit}
   >
     <ul class="flex relative">
       {#if links.length > 0}
-        {#each links as link}
+        {#each links as link, idx}
           <li
-            class="group first:ml-5 ml-3 flex flex-[0_0_auto] items-center justify-center bg-zinc-50/20 rounded-full text-sm leading-none hover:bg-zinc-50/40 focus-within:bg-zinc-50/40 transition-colors duration-75 gap-x-2"
+            class="group first:ml-5 ml-1.5 flex flex-[0_0_auto] items-center justify-center bg-zinc-50/20 rounded-full text-sm leading-none hover:bg-zinc-50/40 focus-within:bg-zinc-50/40 transition-colors duration-75 gap-x-2"
             class:pr-1={ownerIsEditing && !editingAvatar}
           >
             <a
               href={link.url}
               class={twJoin(
                 'inset-0 py-2 select-none focus-visible:outline-none',
-                ownerIsEditing && !editingAvatar ? 'pl-4 ' : 'px-4 '
+                ownerIsEditing && !editingAvatar ? 'pl-4 pointer-events-none' : 'px-4 '
               )}
               target="_blank"
               rel="noreferrer noopener"
@@ -115,6 +141,11 @@
               </button>
             {/if}
           </li>
+          {#if ownerIsEditing && !editingAvatar && idx !== links.length - 1}
+            <button onclick={() => swap(idx)} class="ml-1.5 hover:cursor-pointer">
+              <SwapIcon height={16} width={16} />
+            </button>
+          {/if}
         {/each}
       {/if}
       {#if ownerIsEditing && !editingAvatar}
