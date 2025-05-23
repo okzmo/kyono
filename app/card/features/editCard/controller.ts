@@ -27,21 +27,25 @@ export default class EditCardController {
     name,
     avatar,
     banner,
+    avatarUrl,
+    bannerUrl,
     description,
   }: {
     name: string
-    avatar: Buffer<ArrayBufferLike>
-    banner: Buffer<ArrayBufferLike>
+    avatar?: Buffer<ArrayBufferLike>
+    banner?: Buffer<ArrayBufferLike>
+    avatarUrl?: string
+    bannerUrl?: string
     description: string
   }) {
-    const avatarB64 = 'data:image/png;base64,' + avatar.toString('base64')
-    const bannerB64 = 'data:image/png;base64,' + banner.toString('base64')
+    const avatarSrc = avatar ? 'data:image/png;base64,' + avatar.toString('base64') : avatarUrl
+    const bannerSrc = banner ? 'data:image/png;base64,' + banner.toString('base64') : bannerUrl
 
     const markup = html`<div
       style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%"
     >
       <img
-        src="${bannerB64}"
+        src="${bannerSrc}"
         height="1000"
         width="630"
         style="position: absolute; top: 0; left: 0; width: 1000px; height: 630px; object-fit: cover"
@@ -54,7 +58,7 @@ export default class EditCardController {
       <div
         style="display: flex; align-items: center; gap: 45px; position: absolute; bottom: 40px; left: 40px;"
       >
-        <img src="${avatarB64}" height="200" width="200" style="border-radius: 50%" />
+        <img src="${avatarSrc}" height="200" width="200" style="border-radius: 50%" />
 
         <div style="display: flex; flex-direction: column; color: white; margin-top: 35px">
           <p style="font-size:50px; margin: 0; line-height: 1; font-family: Vollkorn">${name}</p>
@@ -93,12 +97,12 @@ export default class EditCardController {
   }
 
   private async loadHeadingFont() {
-    const response = await fetch(`${env.get('APP_URL')}/vollkorn.ttf`)
+    const response = await fetch(`${env.get('APP_URL')}/fonts/vollkorn.ttf`)
     return await response.arrayBuffer()
   }
 
   private async loadBodyFont() {
-    const response = await fetch(`${env.get('APP_URL')}/rethink.ttf`)
+    const response = await fetch(`${env.get('APP_URL')}/fonts/rethink.ttf`)
     return await response.arrayBuffer()
   }
 
@@ -129,6 +133,21 @@ export default class EditCardController {
     }
 
     if (!this.#noChanges(user, data)) {
+      if (!data.banner && !data.avatar && data.status === user.status) {
+        await this.#deleteOldMetaImg(user)
+        let newMetaImgKey = `${user.username}-meta-${cuid()}.png`
+        let metaImg = await this.generateOG({
+          name: user.displayName || user.username!,
+          avatarUrl: `${user.avatarUrl.slice(0, user.avatarUrl.length - 5)}.png`,
+          bannerUrl: `${user.avatarUrl.slice(0, user.avatarUrl.length - 5)}-blurred.png`,
+          description: user.description || '',
+        })
+        drive.use('s3').put(newMetaImgKey, metaImg)
+        user.metaImgUrl = `${env.get('AWS_CDN_URL')}/${newMetaImgKey}`
+
+        await user.save()
+      }
+
       await user
         .merge({
           displayName: data.displayName,
@@ -184,19 +203,17 @@ export default class EditCardController {
         .png({ quality: 85 })
         .toBuffer()
 
-      if (user.avatarUrl.includes(env.get('AWS_CDN_URL'))) {
-        const existingKey = user.avatarUrl.split('/')?.pop()
-        const existingMetaImgKey = user.metaImgUrl?.split('/')?.pop()
+      await this.#deleteOldMetaImg(user)
 
-        if (existingKey) await drive.use('s3').delete(existingKey)
-        if (existingMetaImgKey) await drive.use('s3').delete(existingMetaImgKey)
-      }
-
-      let newAvatarKey = `${user.username}-avatar-${cuid()}.webp`
+      let newAvatarKey = `${user.username}-avatar-${cuid()}`
+      let ogAvatarKey = `${newAvatarKey}.png`
+      let ogAvatarBlurredKey = `${newAvatarKey}-blurred.png`
       let newMetaImgKey = `${user.username}-meta-${cuid()}.png`
 
-      await drive.use('s3').put(newAvatarKey, croppedImage)
-      user.avatarUrl = `${env.get('AWS_CDN_URL')}/${newAvatarKey}`
+      await drive.use('s3').put(`${newAvatarKey}.webp`, croppedImage)
+      await drive.use('s3').put(ogAvatarKey, ogImageOptimized)
+      await drive.use('s3').put(ogAvatarBlurredKey, ogImageBlurred)
+      user.avatarUrl = `${env.get('AWS_CDN_URL')}/${newAvatarKey}.webp`
 
       let metaImg = await this.generateOG({
         name: user.displayName || user.username!,
@@ -221,5 +238,15 @@ export default class EditCardController {
       Boolean(!data.banner) &&
       Boolean(!data.avatar)
     )
+  }
+
+  async #deleteOldMetaImg(user: User) {
+    if (user.avatarUrl.includes(env.get('AWS_CDN_URL'))) {
+      const existingKey = user.avatarUrl.split('/')?.pop()
+      const existingMetaImgKey = user.metaImgUrl?.split('/')?.pop()
+
+      if (existingKey) await drive.use('s3').delete(existingKey)
+      if (existingMetaImgKey) await drive.use('s3').delete(existingMetaImgKey)
+    }
   }
 }
