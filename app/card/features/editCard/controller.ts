@@ -9,6 +9,8 @@ import { normalizeUrl } from '#utils/normalize_url'
 import satori from 'satori'
 import { html } from 'satori-html'
 import { Resvg } from '@resvg/resvg-js'
+import User from '#auth/models/user'
+import { InferInput } from '@vinejs/vine/types'
 
 export default class EditCardController {
   async deleteLink({ request, response, auth }: HttpContext) {
@@ -103,8 +105,19 @@ export default class EditCardController {
   async handle({ request, auth, response }: HttpContext) {
     const data = await request.validateUsing(editCardValidator)
     const user = await auth.authenticate()
+    if (user.id !== data.id) return response.status(403)
 
-    if (user.id === data.id) {
+    if (data.links) {
+      await Link.createMany(
+        data.links.map((link) => ({
+          label: link.label,
+          url: normalizeUrl(link.url),
+          userId: link.userId,
+        }))
+      )
+    }
+
+    if (!this.#noChanges(user, data)) {
       await user
         .merge({
           displayName: data.displayName,
@@ -112,16 +125,8 @@ export default class EditCardController {
           description: data.description,
         })
         .save()
-
-      if (data.links) {
-        await Link.createMany(
-          data.links.map((link) => ({
-            label: link.label,
-            url: normalizeUrl(link.url),
-            userId: link.userId,
-          }))
-        )
-      }
+    } else {
+      return response.redirect().toPath(`/${user.username}`)
     }
 
     if (data.banner && data.details) {
@@ -195,5 +200,15 @@ export default class EditCardController {
     }
 
     return response.redirect().toPath(`/${user.username}`)
+  }
+
+  #noChanges(user: User, data: InferInput<typeof editCardValidator>): boolean {
+    return (
+      user.displayName === data.displayName &&
+      user.description === data.description &&
+      user.status === data.status &&
+      Boolean(!data.banner) &&
+      Boolean(!data.avatar)
+    )
   }
 }

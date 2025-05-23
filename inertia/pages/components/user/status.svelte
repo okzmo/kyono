@@ -17,7 +17,7 @@
 <div
   class={[
     'md:absolute md:top-4 md:right-4 px-3 bg-zinc-800/35 backdrop-blur-2xl rounded-full py-1 flex items-center justify-center gap-x-2 overflow-hidden max-w-[75%] border border-zinc-50/10 md:border-none shrink-0',
-    !status && 'hidden',
+    !ownerIsEditing && !status && 'hidden',
   ]}
 >
   {#if editingStatus && !editingAvatar}

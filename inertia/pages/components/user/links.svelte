@@ -133,7 +133,7 @@
     <CustomDialogOverlay />
     <CustomDialogContent>
       <Dialog.Title class="flex w-full items-center text-lg font-semibold tracking-tight">
-        Create a new link
+        Add a link
       </Dialog.Title>
       <form onsubmit={onSubmit} class="w-full flex flex-col mt-3 gap-y-2">
         <div class="flex flex-col gap-y-1">
@@ -160,8 +160,9 @@
         <button
           type="submit"
           class="w-full bg-zinc-200 hover:bg-zinc-100 active:bg-zinc-300 transition-colors text-zinc-950 py-2 rounded-md mt-4 hover:cursor-pointer font-bold"
-          >Create</button
         >
+          Add my link
+        </button>
       </form>
 
       <Dialog.Close
