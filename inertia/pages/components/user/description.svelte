@@ -19,7 +19,10 @@
 </script>
 
 <div
-  class={twJoin('flex gap-x-2 items-center', ownerIsEditing && !editingAvatar && 'group !gap-x-3')}
+  class={twJoin(
+    'flex gap-x-2 items-center w-full',
+    ownerIsEditing && !editingAvatar && 'group !gap-x-3'
+  )}
 >
   {#if editingDescription && !editingAvatar}
     <input
@@ -28,7 +31,9 @@
       class="font-sans text-white/65 ml-5 w-[calc(100%-4rem)] focus-visible:outline-none border-b border-b-white/50"
     />
   {:else}
-    <p class="font-sans text-white/65 md:pl-5">{description || 'add a description'}</p>
+    <p class="font-sans text-white/65 md:pl-5 truncate max-w-[23rem]">
+      {description || 'add a description'}
+    </p>
   {/if}
 
   {#if ownerIsEditing && !editingAvatar}

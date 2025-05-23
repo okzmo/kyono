@@ -89,13 +89,13 @@
       {#if links.length > 0}
         {#each links as link}
           <li
-            class="first:ml-5 ml-3 flex flex-[0_0_auto] items-center justify-center bg-zinc-50/20 rounded-full text-sm leading-none hover:bg-zinc-50/40 transition-colors duration-75 gap-x-2"
+            class="group first:ml-5 ml-3 flex flex-[0_0_auto] items-center justify-center bg-zinc-50/20 rounded-full text-sm leading-none hover:bg-zinc-50/40 focus-within:bg-zinc-50/40 transition-colors duration-75 gap-x-2"
             class:pr-1={ownerIsEditing && !editingAvatar}
           >
             <a
               href={link.url}
               class={twJoin(
-                'inset-0 py-2 select-none',
+                'inset-0 py-2 select-none focus-visible:outline-none',
                 ownerIsEditing && !editingAvatar ? 'pl-4 ' : 'px-4 '
               )}
               target="_blank"
