@@ -13,7 +13,7 @@ import { hydrate, mount } from 'svelte'
 const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
 
 createInertiaApp({
-  progress: { color: '#5468FF' },
+  progress: { color: '#ffffff' },
 
   title: (title) => `${title} - ${appName}`,
 
